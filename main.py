@@ -91,7 +91,7 @@ def main():
             # print(tweet.text)
 
             now = datetime.now().strftime("%Y-%m-%d %H:%M")
-            tweet_datetime = tweet.created_at[0:10] + " " + tweet.created_at[12:16]
+            tweet_datetime = tweet.created_at[0:10] + " " + tweet.created_at[11:16]
             
             print("Current Date & Time:", now)
             sys.stdout.flush()
