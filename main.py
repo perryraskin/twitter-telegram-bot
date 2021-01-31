@@ -1,3 +1,4 @@
+import sys
 import requests
 import os
 import json
@@ -18,7 +19,8 @@ def send_telegram(text):
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + chat_id + '&parse_mode=Markdown&text=' + text
 
     response = requests.get(send_text)
-    logger.info('Message sent to chatID ' + chat_id)
+    print('Message sent to chatID ' + chat_id)
+    sys.stdout.flush()
 
     return response.json()
 
@@ -58,6 +60,7 @@ def create_headers(bearer_token):
 def connect_to_endpoint(url, headers, params):
     response = requests.request("GET", url, headers=headers, params=params)
     print(response.status_code)
+    sys.stdout.flush()
     if response.status_code != 200:
         raise Exception(
             "Request returned an error: {} {}".format(
@@ -76,7 +79,8 @@ def main():
         params = get_params()
         
         while True:
-            logger.info('Checking latest tweet...')
+            print('Checking latest tweet...')
+            sys.stdout.flush()
             json_response = connect_to_endpoint(url, headers, params)
             json_string = json.dumps(json_response, indent=4, sort_keys=True)
             #print(json.dumps(json_response, indent=4, sort_keys=True))
@@ -90,14 +94,17 @@ def main():
             tweet_datetime = tweet.created_at[0:10] + " " + tweet.created_at[12:16]
             
             print("Current Date & Time:", now)
+            sys.stdout.flush()
             print("Tweet Date & Time:", tweet_datetime)
+            sys.stdout.flush()
 
             #send the tweet as a Telegram message if it was
             #tweeted in the current minute
             if now == tweet_datetime:
                 send_telegram(tweet.text)
             
-            logger.info('Sleeping for 60 seconds')
+            print('Sleeping for 60 seconds')
+            sys.stdout.flush()
             time.sleep(60)
     
     except Exception as error:
