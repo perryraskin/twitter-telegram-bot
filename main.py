@@ -68,13 +68,13 @@ def connect_to_endpoint(url, headers, params):
 
 
 def main():
-    config_logger()
-    bearer_token = auth()
-    url = create_url()
-    headers = create_headers(bearer_token)
-    params = get_params()
-
     try:
+        config_logger()
+        bearer_token = auth()
+        url = create_url()
+        headers = create_headers(bearer_token)
+        params = get_params()
+        
         while True:
             logger.info('Checking latest tweet...')
             json_response = connect_to_endpoint(url, headers, params)
