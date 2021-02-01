@@ -24,6 +24,10 @@ def send_telegram(text):
 
     return response.json()
 
+def config_last_tweet_sent():
+    global last_tweet_sent
+    last_tweet_sent = ""
+
 def config_logger():
     global logger
     logger = logging.getLogger()
@@ -73,6 +77,8 @@ def connect_to_endpoint(url, headers, params):
 def main():
     try:
         config_logger()
+        config_last_tweet_sent()
+        last_tweet_sent = ""
         bearer_token = auth()
         url = create_url()
         headers = create_headers(bearer_token)
@@ -98,10 +104,16 @@ def main():
             print("Tweet Date & Time:", tweet_datetime)
             sys.stdout.flush()
 
+            print("Last Tweet Sent:", last_tweet_sent)
+            sys.stdout.flush()
+            print("Current Tweet:", tweet.id)
+            sys.stdout.flush()
+
             #send the tweet as a Telegram message if it was
-            #tweeted in the current minute
-            if now == tweet_datetime:
+            #not the last tweet sent to Telegram
+            if str(tweet.id) != last_tweet_sent:
                 send_telegram(tweet.text)
+                last_tweet_sent = str(tweet.id)
             
             print('Sleeping for 60 seconds')
             sys.stdout.flush()
