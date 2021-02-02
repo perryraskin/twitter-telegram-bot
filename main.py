@@ -112,7 +112,11 @@ def main():
             #send the tweet as a Telegram message if it was
             #not the last tweet sent to Telegram
             if str(tweet.id) != last_tweet_sent:
-                send_telegram(tweet.text)
+                #filter out problematic chars
+                tweet_text = tweet.text.replace("#", "No.")
+
+                #send telegram
+                send_telegram(tweet_text)
                 last_tweet_sent = str(tweet.id)
             
             print('Sleeping for 60 seconds')
