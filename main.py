@@ -114,6 +114,7 @@ def main():
             if str(tweet.id) != last_tweet_sent:
                 #filter out problematic chars
                 tweet_text = tweet.text.replace("#", "No.")
+                tweet_text = tweet.text.replace("&", "and")
 
                 #send telegram
                 send_telegram(tweet_text)
