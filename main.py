@@ -115,6 +115,7 @@ def main():
                 #filter out problematic chars
                 tweet_text = tweet.text.replace("#", "No.")
                 tweet_text = tweet.text.replace("&", "and")
+                tweet_text = tweet.text.replace("amp;", "")
 
                 #send telegram
                 send_telegram(tweet_text)
